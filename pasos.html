@@ -1,168 +1,168 @@
-<! DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
-<cabeza>
+<head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Detección de Espacios Vacíos</title>
-<estilo>
+    <style>
         * {
-margen: 0;
-relleno: 0;
-tamaño de caja: border-box;
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
         }
         
-cuerpo {
-Antecedentes: #1a1a2e;
-pantalla: flex;
-justify-content: centro;
-alinear-elementos: centro;
-Altura mínima: 100 Vh;
-familia de fuentes: Arial, sans-serif;
+        body {
+            background: #1a1a2e;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            font-family: Arial, sans-serif;
         }
         
-.contenedor {
-posición: relativa;
-ancho: 90%;
-ancho máximo: 600px;
+        .container {
+            position: relative;
+            width: 90%;
+            max-width: 600px;
         }
         
-lienzo {
-ancho: 100%;
-radio del borde: 10px;
-sombra de caja: 0 0 30px rgba(0, 255, 255, 0.5);
-display: bloque;
-antecedentes: #000;
+        canvas {
+            width: 100%;
+            border-radius: 10px;
+            box-shadow: 0 0 30px rgba(0, 255, 255, 0.5);
+            display: block;
+            background: #000;
         }
         
         #info {
-posición: absoluta;
-arriba: 15px;
-izquierda: 15px;
-Antecedentes: RGBA(0, 0, 0, 0.8);
+            position: absolute;
+            top: 15px;
+            left: 15px;
+            background: rgba(0, 0, 0, 0.8);
             color: #00ffff;
-relleno: 15px;
-radio del borde: 8px;
-borde: 2px #00ffff sólido;
-tamaño de fuente: 13px;
-índice z: 10;
-ancho máximo: 250px;
+            padding: 15px;
+            border-radius: 8px;
+            border: 2px solid #00ffff;
+            font-size: 13px;
+            z-index: 10;
+            max-width: 250px;
         }
         
         #info h3 {
-margen inferior: 8px;
+            margin-bottom: 8px;
             text-shadow: 0 0 5px #00ffff;
         }
         
-.estado {
-margen: 5px 0;
-tamaño de fuente: 12px;
+        .status {
+            margin: 5px 0;
+            font-size: 12px;
         }
         
         .status.detected {
             color: #00ff00;
         }
         
-.status.no-detectado {
+        .status.not-detected {
             color: #ff4444;
         }
         
         #controls {
-posición: absoluta;
-abajo: 15px;
-izquierda: 50%;
-transformar: translateX(-50%);
-Antecedentes: RGBA(0, 0, 0, 0.8);
-relleno: 12px 20px;
-radio del borde: 8px;
-borde: 2px #00ffff sólido;
-índice z: 10;
+            position: absolute;
+            bottom: 15px;
+            left: 50%;
+            transform: translateX(-50%);
+            background: rgba(0, 0, 0, 0.8);
+            padding: 12px 20px;
+            border-radius: 8px;
+            border: 2px solid #00ffff;
+            z-index: 10;
         }
         
-botón {
-fondo: gradiente lineal (135 grados, #00ffff, #00ccff);
-borde: ninguno;
-relleno: 10px 20px;
-margen: 0 5px;
-radio del borde: 5px;
-cursor: puntero;
-peso de fuente: negrita;
+        button {
+            background: linear-gradient(135deg, #00ffff, #00ccff);
+            border: none;
+            padding: 10px 20px;
+            margin: 0 5px;
+            border-radius: 5px;
+            cursor: pointer;
+            font-weight: bold;
             color: #000;
-transición: todos 0.3s;
-tamaño de fuente: 12px;
+            transition: all 0.3s;
+            font-size: 12px;
         }
         
-botón:hover {
-transformar: escala (1.05);
+        button:hover {
+            transform: scale(1.05);
         }
         
-.slider-contenedor {
-posición: absoluta;
-arriba: 15px;
-derecha: 15px;
-Antecedentes: RGBA(0, 0, 0, 0.8);
-relleno: 12px;
-radio del borde: 8px;
-borde: 2px #00ffff sólido;
-índice z: 10;
+        .slider-container {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background: rgba(0, 0, 0, 0.8);
+            padding: 12px;
+            border-radius: 8px;
+            border: 2px solid #00ffff;
+            z-index: 10;
         }
         
-.slider-container etiqueta {
+        .slider-container label {
             color: #00ffff;
-display: bloque;
-tamaño de fuente: 12px;
-margen inferior: 5px;
+            display: block;
+            font-size: 12px;
+            margin-bottom: 5px;
         }
         
         input[type="range"] {
-ancho: 120px;
+            width: 120px;
         }
-</estilo>
-</cabeza>
-<cuerpo>
-<div class="contenedor">
+    </style>
+</head>
+<body>
+    <div class="container">
         <canvas id="canvas"></canvas>
         
         <div id="info">
-<h3> 🎯 Detección</h3>
-<div class="status" id="statusDetection"> 🔍 Escaneando... </div>
-<div style="margin-top: 10px; tamaño de fuente: 11px; color: #ccc;" >
+            <h3>🎯 Detección</h3>
+            <div class="status" id="statusDetection">🔍 Escaneando...</div>
+            <div style="margin-top: 10px; font-size: 11px; color: #ccc;">
                 Área detectada: <span id="areaValue">0</span>%
             </div>
         </div>
         
         <div class="slider-container">
             <label>Sensibilidad:</label>
-<input type="range" id="sensibilidad" min="10" max="100" value="50">
+            <input type="range" id="sensitivity" min="10" max="100" value="50">
         </div>
         
-<div id="controles">
-<button onclick="toggleMode()"> 🔄 Modo</button>
-<button onclick="togglePause()"> ⏸ Pausar</button>
+        <div id="controls">
+            <button onclick="toggleMode()">🔄 Modo</button>
+            <button onclick="togglePause()">⏸ Pausar</button>
         </div>
     </div>
 
-<video id="video" style="display: none;" ></video>
+    <video id="video" style="display: none;"></video>
 
-<guión>
+    <script>
         const canvas = document.getElementById('canvas');
         const ctx = canvas.getContext('2d');
         const video = document.getElementById('video');
         
-Configuración adaptable
+        // Configuración adaptable
         canvas.width = 600;
         canvas.height = 450;
         
-sea tiempo = 0;
+        let time = 0;
         let paused = false;
-modo let = 0; 0: oscuro, 1: brillante
+        let mode = 0; // 0: oscuro, 1: brillante
         
-===== PASO 1: INICIAR CÁMARA =====
-función asíncrona startCamera() {
-prueba {
+        // ===== PASO 1: INICIAR CÁMARA =====
+        async function startCamera() {
+            try {
                 const stream = await navigator.mediaDevices.getUserMedia({
-video: { facingMode: 'entorno' }
+                    video: { facingMode: 'environment' }
                 });
-video.srcObject = flujo;
+                video.srcObject = stream;
                 video.onloadedmetadata = () => {
                     video.play();
                     mainLoop();
@@ -172,32 +172,32 @@ video.srcObject = flujo;
             }
         }
         
-===== PASO 2: DETECTAR ESPACIOS VACÍOS =====
+        // ===== PASO 2: DETECTAR ESPACIOS VACÍOS =====
         function detectEmptySpace() {
-Obtener datos de píxeles del canvas
+            // Obtener datos de píxeles del canvas
             const imageData = ctx.getImageData(0, 0, canvas.width, canvas.height);
             const data = imageData.data;
             
             let emptyPixels = 0;
-let totalPixels = data.length / 4; 4 valores por píxel (RGBA)
+            let totalPixels = data.length / 4; // 4 valores por píxel (RGBA)
             
-Recorrer cada píxel
-for (sea i = 0; i < data.length; i += 4) {
-const r = datos[i];
-const g = datos[i + 1];
-const b = datos[i + 2];
+            // Recorrer cada píxel
+            for (let i = 0; i < data.length; i += 4) {
+                const r = data[i];
+                const g = data[i + 1];
+                const b = data[i + 2];
                 
-Calcular brillo del píxel
-brillo constante = (r + g + b) / 3;
+                // Calcular brillo del píxel
+                const brightness = (r + g + b) / 3;
                 
                 let isEmpty = false;
                 
-if (modo === 0) {
-Modo: detectar áreas OSCURAS (piso, sombras)
-isEmpty = brillo < 100;
+                if (mode === 0) {
+                    // Modo: detectar áreas OSCURAS (piso, sombras)
+                    isEmpty = brightness < 100;
                 } else {
-Modo: detectar áreas CLARAS (paredes blancas)
-isEmpty = brillo > 150;
+                    // Modo: detectar áreas CLARAS (paredes blancas)
+                    isEmpty = brightness > 150;
                 }
                 
                 if (isEmpty) {
@@ -205,154 +205,154 @@ isEmpty = brillo > 150;
                 }
             }
             
-Calcular porcentaje
-const porcentaje = (emptyPixels / totalPixels) * 100;
-porcentaje de devolución;
+            // Calcular porcentaje
+            const percentage = (emptyPixels / totalPixels) * 100;
+            return percentage;
         }
         
-===== PASO 3: ENCONTRAR POSICIÓN PARA OBJETO =====
+        // ===== PASO 3: ENCONTRAR POSICIÓN PARA OBJETO =====
         function findBestPosition() {
-Analizar diferentes zonas del canvas
+            // Analizar diferentes zonas del canvas
             const zoneWidth = canvas.width / 3;
             const zoneHeight = canvas.height / 3;
             
             let bestZone = null;
-sea maxEmptyPixels = 0;
+            let maxEmptyPixels = 0;
             
-Dividir en 9 zonas (3x3)
-for (let fila = 0; fila < 3; fila++) {
+            // Dividir en 9 zonas (3x3)
+            for (let row = 0; row < 3; row++) {
                 for (let col = 0; col < 3; col++) {
                     const x = col * zoneWidth;
-const y = fila * zoneHeight;
+                    const y = row * zoneHeight;
                     
-Contar píxeles vacíos en esta zona
+                    // Contar píxeles vacíos en esta zona
                     const imageData = ctx.getImageData(x, y, zoneWidth, zoneHeight);
                     const data = imageData.data;
                     
                     let emptyCount = 0;
-for (sea i = 0; i < data.length; i += 4) {
-brillo constante = (datos [i] + datos [i + 1] + datos [i + 2]) / 3;
-let isEmpty = mode === 0 ? brillo < 100 : brillo > 150;
+                    for (let i = 0; i < data.length; i += 4) {
+                        const brightness = (data[i] + data[i + 1] + data[i + 2]) / 3;
+                        let isEmpty = mode === 0 ? brightness < 100 : brightness > 150;
                         if (isEmpty) emptyCount++;
                     }
                     
                     if (emptyCount > maxEmptyPixels) {
                         maxEmptyPixels = emptyCount;
-mejorZona = {
+                        bestZone = {
                             x: x + zoneWidth / 2,
                             y: y + zoneHeight / 2,
-col, fila
+                            col, row
                         };
                     }
                 }
             }
             
-devuelve bestZone;
+            return bestZone;
         }
         
-===== PASO 4: DIBUJAR HOLOGRAMA EN POSICIÓN DETECTADA =====
-function drawHologramAtPosition(posición) {
+        // ===== PASO 4: DIBUJAR HOLOGRAMA EN POSICIÓN DETECTADA =====
+        function drawHologramAtPosition(position) {
             if (!position) return;
             
-const { x, y } = posición;
-tamaño constante = 40;
+            const { x, y } = position;
+            const size = 40;
             
-Aura
-pulso const = Math.sin(tiempo * 0,05) * 0,5 + 0,5;
-ctx.fillStyle = 'rgba(0, 255, 255, ${0.2 * pulse})';
+            // Aura
+            const pulse = Math.sin(time * 0.05) * 0.5 + 0.5;
+            ctx.fillStyle = rgba(0, 255, 255, ${0.2 * pulse});
             ctx.beginPath();
-ctx.arc(x, y, tamaño * 1.5, 0, Math.PI * 2);
+            ctx.arc(x, y, size * 1.5, 0, Math.PI * 2);
             ctx.fill();
             
-Anillos
+            // Anillos
             ctx.strokeStyle = 'rgb(0, 255, 255)';
             ctx.lineWidth = 2;
-for (sea i = 1; i <= 2; i++) {
+            for (let i = 1; i <= 2; i++) {
                 ctx.beginPath();
-ctx.arc(x, y, tamaño * i * 0.4, 0, Math.PI * 2);
+                ctx.arc(x, y, size * i * 0.4, 0, Math.PI * 2);
                 ctx.stroke();
             }
             
-Núcleo girando
+            // Núcleo girando
             ctx.save();
             ctx.translate(x, y);
-ctx.rotate(tiempo * 0.03);
+            ctx.rotate(time * 0.03);
             ctx.fillStyle = 'rgba(0, 255, 255, 0.8)';
             ctx.beginPath();
-puntos const = [[0, -size], [size, 0], [0, size], [-size, 0]];
-ctx.moveTo(puntos[0][0], puntos[0][1]);
-puntos.forEach(p => ctx.lineTo(p[0], p[1]));
+            const points = [[0, -size], [size, 0], [0, size], [-size, 0]];
+            ctx.moveTo(points[0][0], points[0][1]);
+            points.forEach(p => ctx.lineTo(p[0], p[1]));
             ctx.closePath();
             ctx.fill();
             ctx.restore();
             
-Indicador de zona
+            // Indicador de zona
             ctx.strokeStyle = 'rgba(0, 255, 255, 0.3)';
             ctx.lineWidth = 1;
             ctx.setLineDash([5, 5]);
-ctx.strokeRect(x - tamaño * 2, y - tamaño * 2, tamaño * 4, tamaño * 4);
+            ctx.strokeRect(x - size * 2, y - size * 2, size * 4, size * 4);
             ctx.setLineDash([]);
         }
         
-===== PASO 5: BUCLE PRINCIPAL =====
+        // ===== PASO 5: LOOP PRINCIPAL =====
         function mainLoop() {
-Dibujar video
+            // Dibujar video
             ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
             
-Superposición oscuro
+            // Overlay oscuro
             ctx.fillStyle = 'rgba(0, 0, 0, 0.05)';
             ctx.fillRect(0, 0, canvas.width, canvas.height);
             
-Detectar espacios vacíos
+            // Detectar espacios vacíos
             const emptyPercentage = detectEmptySpace();
             
-Encontrar mejor posición
+            // Encontrar mejor posición
             const bestPosition = findBestPosition();
             
-Dibujar holograma en posición detectada
-if (mejorPosición) {
+            // Dibujar holograma en posición detectada
+            if (bestPosition) {
                 drawHologramAtPosition(bestPosition);
             }
             
-Actualizar información
+            // Actualizar información
             document.getElementById('areaValue').textContent = 
                 emptyPercentage.toFixed(1);
             
             const statusEl = document.getElementById('statusDetection');
-if (PorcentajeVacío > 30) {
-statusEl.className = 'estado detectado';
-statusEl.textContent = ' ✅ Espacio detectado';
+            if (emptyPercentage > 30) {
+                statusEl.className = 'status detected';
+                statusEl.textContent = '✅ Espacio detectado';
             } else {
-statusEl.className = 'estado no detectado';
-statusEl.textContent = ' ❌ Buscando espacio...';
+                statusEl.className = 'status not-detected';
+                statusEl.textContent = '❌ Buscando espacio...';
             }
             
-Actualizar tiempo
+            // Actualizar tiempo
             if (!paused) time++;
             
             requestAnimationFrame(mainLoop);
         }
         
-===== CONTROLES =====
+        // ===== CONTROLES =====
         function toggleMode() {
-modo = (modo + 1) % 2;
+            mode = (mode + 1) % 2;
             const modeNames = ['Oscuro (piso/sombra)', 'Brillante (pared)'];
             console.log('Modo:', modeNames[mode]);
         }
         
         function togglePause() {
-pausado = !pausado;
+            paused = !paused;
             document.querySelector('button:nth-child(2)').textContent = 
-¿Pausa? ' ▶ Reanudar' : ' ⏸ Pausar';
+                paused ? '▶ Reanudar' : '⏸ Pausar';
         }
         
-document.getElementById('sensibilidad').addEventListener('entrada', (e) => {
-Este slider puede usarse para ajustar el umbral de detección
+        document.getElementById('sensitivity').addEventListener('input', (e) => {
+            // Este slider puede usarse para ajustar el umbral de detección
             console.log('Sensibilidad:', e.target.value);
         });
         
-===== INICIAR =====
+        // ===== INICIAR =====
         startCamera();
     </script>
-</cuerpo>
+</body>
 </html>
