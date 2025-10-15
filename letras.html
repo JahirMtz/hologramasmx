@@ -1,144 +1,144 @@
-<! DOCTYPE html>
+<!DOCTYPE html>
 <html lang="es">
-  <cabeza>
+  <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <título>AR con Texto Animado</title>
-    <estilo>
+    <title>AR con Texto Animado</title>
+    <style>
       * {
-        margen: 0;
-        Relleno: 0;
-        tamaño de caja: border-box;
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
       }
 
-      cuerpo {
-        Antecedentes: #1a1a2e;
-        Pantalla: Flex;
-        justify-content: centro;
-        alinear-elementos: centro;
-        Altura mínima: 100 Vh;
-        familia de fuentes: Arial, sans-serif;
+      body {
+        background: #1a1a2e;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+        font-family: Arial, sans-serif;
       }
 
-      .contenedor {
-        Posición: relativa;
-        Ancho: 90%;
-        ancho máximo: 600px;
+      .container {
+        position: relative;
+        width: 90%;
+        max-width: 600px;
       }
 
-      lona {
-        Ancho: 100%;
-        Radio del borde: 10px;
-        Sombra de caja: 0 0 30px rgba(0, 255, 255, 0.5);
-        Pantalla: Bloque;
-        Antecedentes: #000;
+      canvas {
+        width: 100%;
+        border-radius: 10px;
+        box-shadow: 0 0 30px rgba(0, 255, 255, 0.5);
+        display: block;
+        background: #000;
       }
 
       #info {
-        Posición: Absoluta;
-        Arriba: 15px;
-        Izquierda: 15px;
-        Antecedentes: RGBA(0, 0, 0, 0.8);
-        Color: #00ffff;
-        Relleno: 15px;
-        radio del borde: 8px;
-        borde: 2px #00ffff sólido ;
-        tamaño de fuente: 13px;
-        Índice Z: 10;
-        ancho máximo: 250px;
+        position: absolute;
+        top: 15px;
+        left: 15px;
+        background: rgba(0, 0, 0, 0.8);
+        color: #00ffff;
+        padding: 15px;
+        border-radius: 8px;
+        border: 2px solid #00ffff;
+        font-size: 13px;
+        z-index: 10;
+        max-width: 250px;
       }
 
       #info h3 {
-        margen inferior: 8px;
-        sombra de texto: 0 0 5px #00ffff;
+        margin-bottom: 8px;
+        text-shadow: 0 0 5px #00ffff;
       }
 
-      .estado {
-        margen: 5px 0;
-        tamaño de fuente: 12px;
+      .status {
+        margin: 5px 0;
+        font-size: 12px;
       }
 
       .status.detected {
-        Color: #00ff00;
+        color: #00ff00;
       }
 
       .status.not-detected {
-        Color: #ff4444;
+        color: #ff4444;
       }
 
       #controls {
-        Posición: Absoluta;
-        Abajo: 15px;
-        Izquierda: 50%;
+        position: absolute;
+        bottom: 15px;
+        left: 50%;
         transform: translateX(-50%);
-        Antecedentes: RGBA(0, 0, 0, 0.8);
-        Relleno: 12px 20px;
-        radio del borde: 8px;
-        borde: 2px #00ffff sólido ;
-        Índice Z: 10;
+        background: rgba(0, 0, 0, 0.8);
+        padding: 12px 20px;
+        border-radius: 8px;
+        border: 2px solid #00ffff;
+        z-index: 10;
       }
 
-      botón {
-        Fondo: gradiente lineal (135 grados, #00ffff, #00ccff);
-        Borde: Ninguno;
-        Relleno: 10px 20px;
-        margen: 0 5px;
-        radio del borde: 5px;
-        cursor: puntero;
-        peso de fuente: negrita;
-        Color: #000;
-        Transición: todos 0.3s;
-        tamaño de fuente: 12px;
+      button {
+        background: linear-gradient(135deg, #00ffff, #00ccff);
+        border: none;
+        padding: 10px 20px;
+        margin: 0 5px;
+        border-radius: 5px;
+        cursor: pointer;
+        font-weight: bold;
+        color: #000;
+        transition: all 0.3s;
+        font-size: 12px;
       }
 
-      botón: hover {
-        transformar: escala(1.05);
+      button:hover {
+        transform: scale(1.05);
       }
 
-      .slider-contenedor {
-        Posición: Absoluta;
-        Arriba: 15px;
-        Derecha: 15px;
-        Antecedentes: RGBA(0, 0, 0, 0.8);
-        Relleno: 12px;
-        radio del borde: 8px;
-        borde: 2px #00ffff sólido ;
-        Índice Z: 10;
+      .slider-container {
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        background: rgba(0, 0, 0, 0.8);
+        padding: 12px;
+        border-radius: 8px;
+        border: 2px solid #00ffff;
+        z-index: 10;
       }
 
-      .slider-container  {
-        Color: #00ffff;
-        Pantalla: Bloque;
-        tamaño de fuente: 12px;
-        margen inferior: 5px;
+      .slider-container label {
+        color: #00ffff;
+        display: block;
+        font-size: 12px;
+        margin-bottom: 5px;
       }
 
-      input[type="rango"] {
-        Ancho: 120px;
+      input[type="range"] {
+        width: 120px;
       }
-    </estilo>
-  </cabeza>
-  <cuerpo>
-    <div class="contenedor">
+    </style>
+  </head>
+  <body>
+    <div class="container">
       <canvas id="canvas"></canvas>
 
       <div id="info">
         <h3>AR + Texto Animado</h3>
-        <div class="status" id="statusDetection"> 🔍 Escaneando... </div>
-        <div style="margin-top: 10px; tamaño de fuente: 11px; Color: #ccc">
- Área detectada: <span id="areaValue">0</span>%
+        <div class="status" id="statusDetection">🔍 Escaneando...</div>
+        <div style="margin-top: 10px; font-size: 11px; color: #ccc">
+          Área detectada: <span id="areaValue">0</span>%
         </div>
       </div>
 
-      <div class="contenedor-deslizante">
-        <etiqueta>Sensibilidad:</label>
+      <div class="slider-container">
+        <label>Sensibilidad:</label>
         <input type="range" id="sensitivity" min="10" max="100" value="50" />
       </div>
 
-      <div id="controles">
-        <button onclick="toggleMode()"> 🔄 Modo</button>
-        <button onclick="togglePause()"> ⏸ Pausar</button>
-        <button onclick="toggleText()"> 📝 Texto</button>
+      <div id="controls">
+        <button onclick="toggleMode()">🔄 Modo</button>
+        <button onclick="togglePause()">⏸ Pausar</button>
+        <button onclick="toggleText()">📝 Texto</button>
       </div>
     </div>
 
@@ -268,7 +268,7 @@
         const size = 40;
 
         const pulse = Math.sin(time * 0.05) * 0.5 + 0.5;
-        ctx.fillStyle = `rgba(0, 255, 255, ${0.2 * pulse})`;
+        ctx.fillStyle = rgba(0, 255, 255, ${0.2 * pulse});
         ctx.beginPath();
         ctx.arc(x, y, size * 1.5, 0, Math.PI * 2);
         ctx.fill();
@@ -309,7 +309,7 @@
         const offset = Math.sin(time * 0.02) * 10;
 
         ctx.fillStyle = color;
-        ctx.font = `bold ${fontSize}px Arial`;
+        ctx.font = bold ${fontSize}px Arial;
         ctx.textAlign = "center";
         ctx.shadowColor = color;
         ctx.shadowBlur = 10;
@@ -328,7 +328,7 @@
         const displayText = text.substring(0, charsToShow);
 
         ctx.fillStyle = color;
-        ctx.font = `bold ${fontSize}px Arial`;
+        ctx.font = bold ${fontSize}px Arial;
         ctx.textAlign = "center";
         ctx.shadowColor = color;
         ctx.shadowBlur = 8;
@@ -352,7 +352,7 @@
 
         ctx.fillStyle = color;
         ctx.globalAlpha = alpha;
-        ctx.font = `bold ${fontSize}px Arial`;
+        ctx.font = bold ${fontSize}px Arial;
         ctx.textAlign = "left";
         ctx.shadowColor = color;
         ctx.shadowBlur = 15;
@@ -437,30 +437,30 @@
       }
 
       function toggleMode() {
- modo = (modo + 1) % 2;
+        mode = (mode + 1) % 2;
         const modeNames = ["Oscuro (piso/sombra)", "Brillante (pared)"];
         console.log("Modo:", modeNames[mode]);
       }
 
       function togglePause() {
- pausado = !pausado;
- document.querySelector("button:nth-child(2)").textContent = pausado
+        paused = !paused;
+        document.querySelector("button:nth-child(2)").textContent = paused
           ? "▶ Reanudar"
           : "⏸ Pausar";
       }
 
       function toggleText() {
- mostrarTexto = !mostrarTexto;
+        showText = !showText;
         document.querySelector("button:nth-child(3)").textContent = showText
- ? " 📝 Texto"
- : " 📝 Apagado";
+          ? "📝 Texto"
+          : "📝 Off";
       }
 
       document.getElementById("sensitivity").addEventListener("input", (e) => {
- console.log("Sensibilidad:", e.target.value); 
+        console.log("Sensibilidad:", e.target.value);
       });
 
       startCamera();
     </script>
-  </cuerpo>
+  </body>
 </html>
